@@ -17,3 +17,5 @@ FieldEffectStart 08083444 1
 TryStartStepCountScript 0806d698 1
 SetUpFieldMove_Strength 080d07ec 0
 TryPushBoulder 0805bcec 3
+
+IsSpeciesInEncounterTable 0813cc18 3
