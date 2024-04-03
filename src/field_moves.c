@@ -1285,3 +1285,44 @@ bool8 TryStartStepCountScript(u16 metatileBehavior)
         return TRUE;
     return FALSE;
 }
+
+bool8 SetUpFieldMove_Strength(void)
+{
+    // add big box to strength list
+    if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING) || (CheckObjectGraphicsInFrontOfPlayer(97) != TRUE && CheckObjectGraphicsInFrontOfPlayer(104) != TRUE))
+    {
+        return FALSE;
+    }
+    else
+    {
+        *(u16 *)(0x020370d0) = GetCursorSelectionMonId();
+        gFieldCallback2 = 0x081248b1; //FieldCallback_PrepareFadeInFromMenu;
+        gPostMenuFieldCallback = 0x080d0841; //FieldCB_UseStrength;
+        return TRUE;
+    }
+}
+
+bool8 TryPushBoulder(s16 x, s16 y, u8 direction)
+{
+    u8 objectEventId;
+    u8 direction_ = direction;
+    if (!FlagGet(0x805)) // FLAG_SYS_USE_STRENGTH
+        return FALSE;
+
+    objectEventId = GetObjectEventIdByXY(x, y);
+    if (objectEventId == OBJECT_EVENTS_COUNT)
+        return FALSE;
+
+    if (gObjectEvents[objectEventId].graphicsId != 97 && gObjectEvents[objectEventId].graphicsId != 104)
+        return FALSE;
+
+    x = gObjectEvents[objectEventId].currentCoords.x;
+    y = gObjectEvents[objectEventId].currentCoords.y;
+    MoveCoords(direction_, &x, &y);
+    if (MapGridGetMetatileBehaviorAt(x, y) == 0x66 || (GetCollisionAtCoords(&gObjectEvents[objectEventId], x, y, direction_) == 0 && !MetatileBehavior_IsNonAnimDoor(MapGridGetMetatileBehaviorAt(x, y))))
+    {
+        StartStrengthAnim(objectEventId, direction_);
+        return TRUE;
+    }
+    return FALSE;
+}

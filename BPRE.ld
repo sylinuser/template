@@ -1980,3 +1980,6 @@ gObjectEvents = 0x02036e38;
 
 UpdateVsSeekerStepCounter = 0x0810c4ec | 1;
 SafariZoneTakeStep = 0x080a0f0c | 1;
+GetObjectEventIdByXY = 0x0805dfb0 | 1;
+MetatileBehavior_IsNonAnimDoor = 0x08059c8c | 1;
+StartStrengthAnim = 0x0805ccd0 | 1;
