@@ -1977,3 +1977,6 @@ UnfreezeObjectEvents = 0x08068a5c | 1;
 gFieldEffectObjectTemplatePointers = 0x083a0010;
 gPlayerAvatar = 0x02037078;
 gObjectEvents = 0x02036e38;
+
+UpdateVsSeekerStepCounter = 0x0810c4ec | 1;
+SafariZoneTakeStep = 0x080a0f0c | 1;

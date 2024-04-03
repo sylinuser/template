@@ -12,3 +12,6 @@ FieldCallback_Dig 080c9aac 0
 # metatile behavior for headbutt
 onpress_a_get_script_tile 0806D1F0 2
 FieldEffectStart 08083444 1
+
+# start script when stepping on whirlpool tile
+TryStartStepCountScript 0806d698 1

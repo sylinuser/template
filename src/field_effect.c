@@ -95,7 +95,7 @@ const struct SpriteTemplate gFieldEffectObjectTemplate_RockClimbDust = {
     .callback = 0x080dcce1, // UpdateJumpImpactEffect,
 };
 
-const struct SpritePalette gSpritePalette_BigDust = {0x9DA5080, /*gFieldEffectPal_DustCloudgFieldEffectPal_DustCloud,*/ 
+const struct SpritePalette gSpritePalette_BigDust = {0x9DA5080, /*gFieldEffectPal_DustCloudgFieldEffectPal_DustCloud,*/
                                                      FLDEFF_PAL_TAG_DUST_CLOUD};
 
 const struct SpritePalette gSpritePalette_RockClimbBlob = {0x9DA5060, FLDEFF_PAL_TAG_ROCK_CLIMB_BLOB};
@@ -175,7 +175,7 @@ extern const u8 *const gNewFieldEffectScriptPointers[];
 //    4                                                                                   // end
 //};
 //
-//const u8 *const gNewFieldEffectScriptPointers[] = 
+//const u8 *const gNewFieldEffectScriptPointers[] =
 //{
 //    [FLDEFF_USE_ROCK_CLIMB - START_OF_NEW_FLD_EFF]  = gFieldEffectScript_UseRockClimb,
 //    [FLDEFF_ROCK_CLIMB_DUST - START_OF_NEW_FLD_EFF] = gFieldEffectScript_RockClimbDust,
@@ -316,6 +316,3 @@ u32 FldEff_SnowyTallGrass(void)
     }
     return 0;
 }
-
-
-

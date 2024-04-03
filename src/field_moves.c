@@ -784,14 +784,23 @@ bool8 FldEff_WhirlpoolDisappear(void)
     return FALSE;
 }
 
+const struct RockClimbRide sWhirlpoolDelta[] =
+{
+    [DIR_NONE] = {MOVEMENT_ACTION_WALK_FAST_DOWN, 0, 0, DIR_NONE},
+    [DIR_SOUTH] = {MOVEMENT_ACTION_WALK_FAST_DOWN, 0, -1, DIR_SOUTH},
+    [DIR_NORTH] = {MOVEMENT_ACTION_WALK_FAST_UP, 0, 1, DIR_NORTH},
+    [DIR_WEST] = {MOVEMENT_ACTION_WALK_FAST_LEFT, 1, 0, DIR_WEST},
+    [DIR_EAST] = {MOVEMENT_ACTION_WALK_FAST_RIGHT, -1, 0, DIR_EAST},
+};
+
 
 u8 CreateWhirlpoolDisappear(void)
 {
     u8 spriteId;
     struct Sprite *sprite;
     struct ObjectEvent *objectEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
-    s8 dx = sRockClimbMovement[objectEvent->movementDirection].dx;
-    s8 dy = sRockClimbMovement[objectEvent->movementDirection].dy;
+    s8 dx = sWhirlpoolDelta[objectEvent->movementDirection].dx;
+    s8 dy = sWhirlpoolDelta[objectEvent->movementDirection].dy;
     s16 x, y;
 
     GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
@@ -1230,3 +1239,49 @@ bool8 SetUpFieldMove_RockClimb(void)
 #undef tDestX
 #undef tDestY
 #undef tMonId
+
+
+#define gQuestLogState *(u8 *)(0x0203adfa)
+
+#define QL_STATE_RECORDING     1
+#define QL_STATE_PLAYBACK      2
+#define QL_STATE_PLAYBACK_LAST 3
+
+bool8 TryStartStepCountScript(u16 metatileBehavior)
+{
+    if (InUnionRoom() == TRUE)
+        return FALSE;
+    if (gQuestLogState == QL_STATE_PLAYBACK)
+        return FALSE;
+
+    UpdateHappinessStepCounter();
+
+    if (MapGridGetMetatileBehaviorAt(gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.x, gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y) == 0xA6)
+    {
+        ScriptContext_SetupScript(0x08AE3230); // whirlpool spin mat gang
+        return TRUE;
+    }
+
+    if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_FORCED) && !MetatileBehavior_IsForcedMovementTile(metatileBehavior))
+    {
+        if (UpdateVsSeekerStepCounter() == TRUE)
+        {
+            ScriptContext_SetupScript(0x081a8ced); // EventScript_VsSeekerChargingDone
+            return TRUE;
+        }
+        else if (UpdatePoisonStepCounter() == TRUE)
+        {
+            ScriptContext_SetupScript(0x081a8dfd); // EventScript_FieldPoison
+            return TRUE;
+        }
+        else if (ShouldEggHatch())
+        {
+            IncrementGameStat(13); // GAME_STAT_HATCHED_EGGS
+            ScriptContext_SetupScript(0x081bf546); // EventScript_EggHatch
+            return TRUE;
+        }
+    }
+    if (SafariZoneTakeStep() == TRUE)
+        return TRUE;
+    return FALSE;
+}
