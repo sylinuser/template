@@ -388,7 +388,7 @@ static void ShowMapNamePopUpWindow(void)
     GetMapName(withoutPrefixPtr, gMapHeader.regionMapSectionId, 0);
     AddMapNamePopUpWindow();
     LoadMapNamePopUpWindowBg();
-    x = 80 - GetStringCenterAlignXOffset(0, withoutPrefixPtr, -1);
+    x = 40 - (GetStringCenterAlignXOffset(0, withoutPrefixPtr, -1) / 2);
     mapDisplayHeader[0] = 0xFC;
     mapDisplayHeader[1] = 0x02;
     mapDisplayHeader[2] = 0x00;
