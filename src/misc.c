@@ -4,12 +4,14 @@
 #include "../include/event_data.h"
 #include "../include/main.h"
 #include "../include/overworld.h"
+#include "../include/palette.h"
 #include "../include/pokemon.h"
 #include "../include/save.h"
 #include "../include/sound.h"
 #include "../include/sprite.h"
 #include "../include/string_util.h"
 #include "../include/task.h"
+#include "../include/window.h"
 #include "../include/constants/moves.h"
 
 #define LAND_WILD_COUNT     12

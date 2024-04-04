@@ -19,3 +19,6 @@ SetUpFieldMove_Strength 080d07ec 0
 TryPushBoulder 0805bcec 3
 
 IsSpeciesInEncounterTable 0813cc18 3
+#MapNamePopupCreateWindow 08098340 1
+
+Task_MapNamePopUpWindow 080981ac 1

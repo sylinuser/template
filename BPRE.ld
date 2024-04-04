@@ -1983,3 +1983,14 @@ SafariZoneTakeStep = 0x080a0f0c | 1;
 GetObjectEventIdByXY = 0x0805dfb0 | 1;
 MetatileBehavior_IsNonAnimDoor = 0x08059c8c | 1;
 StartStrengthAnim = 0x0805ccd0 | 1;
+
+GetTextWindowPalette = 0x08150408 | 1;
+gPlttBufferUnfaded = 0x020371f8;
+LoadStdWindowTiles = 0x0814ff6c | 1;
+DrawTextBorderOuter = 0x08150048 | 1;
+MapNamePopupPrintMapNameOnWindow = 0x08098400 | 1;
+
+HideStartMenu = 0x080a0934 | 1;
+sMapPopUp_Table = 0x09BFD000;
+sMapPopUp_OutlineTable = 0x09BFE680;
+sMapPopUp_PaletteTable = 0x09BFFD00;
