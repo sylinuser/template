@@ -22,3 +22,6 @@ IsSpeciesInEncounterTable 0813cc18 3
 #MapNamePopupCreateWindow 08098340 1
 
 Task_MapNamePopUpWindow 080981ac 1
+ShowMapNamePopup 08098110 0
+InitStandardTextBoxWindows 080f6c6c 0
+HideMapNamePopUpWindow 080982EC 0

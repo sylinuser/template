@@ -27,16 +27,17 @@ enum MapPopUp_Themes
 };
 
 // static functions
-static void Task_MapNamePopUpWindow(u8 taskId);
+void Task_MapNamePopUpWindow(u8 taskId);
 static void ShowMapNamePopUpWindow(void);
 static void LoadMapNamePopUpWindowBg(void);
-static void ShowMapNamePopup(void);
+void ShowMapNamePopup(void);
 void HideMapNamePopUpWindow(void);
 u8 GetMapNamePopUpWindowId(void);
 
 // EWRAM
 #define sPopupTaskId *(u8 *)(0x0203FF3F)
 #define sMapNamePopupWindowId *(u8 *)(0x0203FF3E)
+#define sStartMenuWindowId *(u8 *)(0x0203abe0)
 #define TEXT_SKIP_DRAW 0xFF
 
 extern const u8 sMapPopUp_Table[NUM_MAPPOPUP_THEMES][960];
@@ -162,6 +163,14 @@ u16 AddWindowParameterized(u8 bg, u8 left, u8 top, u8 width, u8 height, u8 palet
     return AddWindow(&template);
 }
 
+void InitStandardTextBoxWindows(void)
+{
+    sStartMenuWindowId = 0xFF;
+    sMapNamePopupWindowId = 0xFF;
+    InitWindows(0x0841f42c);
+    MapNamePopupWindowIdSetDummy();
+}
+
 
 
 
@@ -185,6 +194,49 @@ void RemoveMapNamePopUpWindow(void)
     {
         RemoveWindow(sMapNamePopupWindowId);
         sMapNamePopupWindowId = 0xFF;
+    }
+}
+
+
+
+
+#define GPU_REG_BUF_SIZE 0x60
+
+u8 sGpuRegBuffer[GPU_REG_BUF_SIZE];
+#define sGpuRegBufferLocked *(u8 *)(0x030000c0)
+u8 sGpuRegWaitingList[GPU_REG_BUF_SIZE];
+
+#define GPU_REG_BUF(offset) (*(u16 *)(&sGpuRegBuffer[offset]))
+#define GPU_REG(offset) (*(vu16 *)(REG_BASE + offset))
+
+void SetGpuReg_ForcedBlank(u8 regOffset, u16 value)
+{
+    if (regOffset < GPU_REG_BUF_SIZE)
+    {
+        GPU_REG_BUF(regOffset) = value;
+
+        if (REG_DISPCNT & DISPCNT_FORCED_BLANK)
+        {
+            CopyBufferedValueToGpuReg(regOffset);
+        }
+        else
+        {
+            s32 i;
+
+            sGpuRegBufferLocked = TRUE;
+
+            for (i = 0; i < GPU_REG_BUF_SIZE && sGpuRegWaitingList[i] != 0xFF; i++)
+            {
+                if (sGpuRegWaitingList[i] == regOffset)
+                {
+                    sGpuRegBufferLocked = FALSE;
+                    return;
+                }
+            }
+
+            sGpuRegWaitingList[i] = regOffset;
+            sGpuRegBufferLocked = FALSE;
+        }
     }
 }
 
@@ -222,7 +274,7 @@ enum {
 
 #define FLAG_HIDE_MAP_NAME_POPUP 0x4000
 
-static void ShowMapNamePopup(void)
+void ShowMapNamePopup(void)
 {
     if (FlagGet(FLAG_HIDE_MAP_NAME_POPUP) != TRUE)
     {
@@ -245,7 +297,7 @@ static void ShowMapNamePopup(void)
     }
 }
 
-static void Task_MapNamePopUpWindow(u8 taskId)
+void Task_MapNamePopUpWindow(u8 taskId)
 {
     struct Task *task = &gTasks[taskId];
 
@@ -267,7 +319,7 @@ static void Task_MapNamePopUpWindow(u8 taskId)
         {
             task->tYOffset = 0;
             task->tState = STATE_WAIT;
-            gTasks[sPopupTaskId].data[1] = 0;
+            gTasks[sPopupTaskId].tOnscreenTimer = 0;
         }
         break;
     case STATE_WAIT:
@@ -300,7 +352,7 @@ static void Task_MapNamePopUpWindow(u8 taskId)
         }
         break;
     case STATE_ERASE:
-        ClearStdWindowAndFrame(GetMapNamePopUpWindowId(), TRUE);
+        //ClearStdWindowAndFrame(GetMapNamePopUpWindowId(), TRUE);
         task->tState = STATE_END;
         break;
     case STATE_END:
@@ -312,16 +364,14 @@ static void Task_MapNamePopUpWindow(u8 taskId)
 
 void HideMapNamePopUpWindow(void)
 {
-    if (FuncIsActiveTask(Task_MapNamePopUpWindow))
+    if (FuncIsActiveTask(0x080981ac | 1))
     {
-    #ifdef UBFIX
-        if (GetMapNamePopUpWindowId() != WINDOW_NONE)
-    #endif // UBFIX
+        if (GetMapNamePopUpWindowId() != 0xFF)
         {
             ClearStdWindowAndFrame(GetMapNamePopUpWindowId(), TRUE);
             RemoveMapNamePopUpWindow();
         }
-        //SetGpuReg_ForcedBlank(REG_OFFSET_BG0VOFS, 0);
+        SetGpuReg_ForcedBlank(REG_OFFSET_BG0VOFS, 0);
         DestroyTask(sPopupTaskId);
     }
 }
