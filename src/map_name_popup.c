@@ -285,6 +285,7 @@ void ShowMapNamePopup(void)
             SetGpuReg(REG_OFFSET_BG0VOFS, POPUP_OFFSCREEN_Y);
             gTasks[sPopupTaskId].tState = STATE_PRINT;
             gTasks[sPopupTaskId].tYOffset = POPUP_OFFSCREEN_Y;
+            sMapNamePopupWindowId = 0xFF; // initialize window id to 0xFF in case
         }
         else
         {
@@ -387,7 +388,7 @@ static void ShowMapNamePopUpWindow(void)
     GetMapName(withoutPrefixPtr, gMapHeader.regionMapSectionId, 0);
     AddMapNamePopUpWindow();
     LoadMapNamePopUpWindowBg();
-    x = GetStringCenterAlignXOffset(0, withoutPrefixPtr, 80);
+    x = 80 - GetStringCenterAlignXOffset(0, withoutPrefixPtr, -1);
     mapDisplayHeader[0] = 0xFC;
     mapDisplayHeader[1] = 0x02;
     mapDisplayHeader[2] = 0x00;
