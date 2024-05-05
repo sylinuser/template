@@ -1991,9 +1991,9 @@ DrawTextBorderOuter = 0x08150048 | 1;
 MapNamePopupPrintMapNameOnWindow = 0x08098400 | 1;
 
 HideStartMenu = 0x080a0934 | 1;
-sMapPopUp_Table = 0x09BFD000;
-sMapPopUp_OutlineTable = 0x09BFE680;
-sMapPopUp_PaletteTable = 0x09BFFD00;
+sMapPopUp_Table = 0x09BFC000;
+sMapPopUp_OutlineTable = 0x09BFDE00;
+sMapPopUp_PaletteTable = 0x09BFFC00;
 MapNamePopupWindowIdSetDummy = 0x08112ea8 | 1;
 sGpuRegBuffer = 0x03000000;
 CopyBufferedValueToGpuReg = 0x080009c0 | 1;
