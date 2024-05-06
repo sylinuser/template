@@ -25,3 +25,11 @@ Task_MapNamePopUpWindow 080981ac 1
 ShowMapNamePopup 08098110 0
 InitStandardTextBoxWindows 080f6c6c 0
 HideMapNamePopUpWindow 080982EC 0
+
+#below is used for like.  emerald or something.  idk
+#GetTrainerStarCount 0808975c 1
+RewriteTrainerStarCount 08089960 0
+HasAllKantoMons 08088F58 0
+GetKantoPokedexCount 08088edc 1
+RewriteMaxCountInDexScreen 0810352C 1
+DexScreen_GetDexCount 08104BBC 2

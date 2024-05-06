@@ -1998,3 +1998,5 @@ MapNamePopupWindowIdSetDummy = 0x08112ea8 | 1;
 sGpuRegBuffer = 0x03000000;
 CopyBufferedValueToGpuReg = 0x080009c0 | 1;
 sGpuRegWaitingList = 0x03000060;
+
+GetNationalPokedexCount = 0x08088e8c | 1;
