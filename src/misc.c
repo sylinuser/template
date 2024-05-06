@@ -135,7 +135,7 @@ u8 GetTrainerStarCount(struct TrainerCard *trainerCard)
         stars++;
 
     if (stars >= 4) // set a flag if all 4 stars are collected
-        FlagSet(0x233F);
+        FlagSet(0x2340);
 
     return stars;
 }
