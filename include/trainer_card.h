@@ -110,8 +110,9 @@ struct TrainerCardData
     u16 cardTop;
     bool8 timeColonNeedDraw;
     u8 language; // 0x7BD0
-    u8 badgeTiles[0x80 * NUM_BADGES]; // repoint this to have space for 16 badges + at the end of the stucture
+    u8 badgeTiles[2 * 0x80 * NUM_BADGES]; // repoint this to have space for 16 badges + at the end of the stucture
     u16 badgeBitfield; // 1 bit per badge
+    u16 goldBadgeBitfield;
 };
 
 extern struct TrainerCardData *sTrainerCardDataPtr;

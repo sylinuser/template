@@ -7,6 +7,7 @@
 #include "../include/string_util.h"
 #include "../include/task.h"
 #include "../include/trainer_card.h"
+#include "../include/constants/flags.h"
 
 // check out bytereplacement for the two functions that had their sizeof edited
 
@@ -15,13 +16,16 @@ void SetDataFromTrainerCard_edits(void)
 {
     u16 flags[NUM_BADGES] = {FLAG_BADGE_VIOLET, FLAG_BADGE_AZALEA, FLAG_BADGE_GOLDENROD, FLAG_BADGE_ECRUTEAK, FLAG_BADGE_CIANWOOD, FLAG_BADGE_OLIVINE, FLAG_BADGE_MAHOGANY, FLAG_BADGE_BLACKTHORN,
                              FLAG_BADGE_PEWTER, FLAG_BADGE_CERULEAN, FLAG_BADGE_VERMILION, FLAG_BADGE_CELADON, FLAG_BADGE_FUCHSIA, FLAG_BADGE_SAFFRON, FLAG_BADGE_CINNABAR, FLAG_BADGE_VIRIDIAN};
-    
+
     sTrainerCardDataPtr->badgeBitfield = 0;
-    
+    sTrainerCardDataPtr->goldBadgeBitfield = 0;
+
     for (int i = 0; i < NUM_BADGES; i++)
     {
         if (FlagGet(flags[i]))
             sTrainerCardDataPtr->badgeBitfield |= (1 << i);
+        if (i & 1 && FlagGet(FLAG_GYM_REMATCH_1+i))
+            sTrainerCardDataPtr->goldBadgeBitfield |= (1 << i);
     }
 }
 
@@ -43,12 +47,19 @@ void DrawStarsAndBadgesOnCard(void)
         x = 5;
         for (i = 0; i < NUM_BADGES; i++, tileNum += 2, x += 3)
         {
-            if (sTrainerCardDataPtr->badgeBitfield & (1 << i))
+            if (sTrainerCardDataPtr->goldBadgeBitfield & (1 << i))
+            {
+                FillBgTilemapBufferRect(3, tileNum + 32,     x,     y, 1, 1, palNum);
+                FillBgTilemapBufferRect(3, tileNum + 33, x + 1,     y, 1, 1, palNum);
+                FillBgTilemapBufferRect(3, tileNum + 96,     x, y + 1, 1, 1, palNum);
+                FillBgTilemapBufferRect(3, tileNum + 97, x + 1, y + 1, 1, 1, palNum);
+            }
+            else if (sTrainerCardDataPtr->badgeBitfield & (1 << i))
             {
                 FillBgTilemapBufferRect(3,      tileNum,     x,     y, 1, 1, palNum);
                 FillBgTilemapBufferRect(3,  tileNum + 1, x + 1,     y, 1, 1, palNum);
-                FillBgTilemapBufferRect(3, tileNum + 32,     x, y + 1, 1, 1, palNum);
-                FillBgTilemapBufferRect(3, tileNum + 33, x + 1, y + 1, 1, 1, palNum);
+                FillBgTilemapBufferRect(3, tileNum + 64,     x, y + 1, 1, 1, palNum);
+                FillBgTilemapBufferRect(3, tileNum + 65, x + 1, y + 1, 1, 1, palNum);
             }
             if (i == 7) // reset x to 4, add 2 to y
             {
@@ -72,7 +83,7 @@ bool8 Task_SetCardFlipped(struct Task* task)
         DrawTrainerCardWindow(2);
         DrawCardScreenBackground(sTrainerCardDataPtr->bgTilemap);
         DrawCardFrontOrBack(sTrainerCardDataPtr->frontTilemap);
-        LoadBgTiles(3, sTrainerCardDataPtr->badgeTiles, 0x80 * NUM_BADGES, 0);
+        LoadBgTiles(3, sTrainerCardDataPtr->badgeTiles, sizeof(sTrainerCardDataPtr->badgeTiles), 0);
         DrawStarsAndBadgesOnCard();
     }
     else // load in icons before the flip is allowed to happen fully
@@ -95,7 +106,7 @@ void SaveStatToString_case_badges(u8 *dest)
     u16 flags[NUM_BADGES] = {FLAG_BADGE_VIOLET, FLAG_BADGE_AZALEA, FLAG_BADGE_GOLDENROD, FLAG_BADGE_ECRUTEAK, FLAG_BADGE_CIANWOOD, FLAG_BADGE_OLIVINE, FLAG_BADGE_MAHOGANY, FLAG_BADGE_BLACKTHORN,
                              FLAG_BADGE_PEWTER, FLAG_BADGE_CERULEAN, FLAG_BADGE_VERMILION, FLAG_BADGE_CELADON, FLAG_BADGE_FUCHSIA, FLAG_BADGE_SAFFRON, FLAG_BADGE_CINNABAR, FLAG_BADGE_VIRIDIAN};
     u8 nBadges = 0;
-    
+
     for (int i = 0; i < NUM_BADGES; i++)
     {
         if (FlagGet(flags[i]))
@@ -103,7 +114,7 @@ void SaveStatToString_case_badges(u8 *dest)
             nBadges++;
         }
     }
-    
+
     if (nBadges >= 10)
         *dest++ = (nBadges / 10) + 0xA1;
     *dest++ = (nBadges % 10) + 0xA1;
