@@ -2000,3 +2000,6 @@ CopyBufferedValueToGpuReg = 0x080009c0 | 1;
 sGpuRegWaitingList = 0x03000060;
 
 GetNationalPokedexCount = 0x08088e8c | 1;
+GetHealLocationIndexFromMapGroupAndNum = 0x080bfc50 | 1;
+sWhiteoutRespawnHealCenterMapIdxs = 0x08C230C0;
+SetWhiteoutRespawnHealerNpcAsLastTalked = 0x080bfe00 | 1;

@@ -33,3 +33,6 @@ HasAllKantoMons 08088F58 0
 GetKantoPokedexCount 08088edc 1
 RewriteMaxCountInDexScreen 0810352C 1
 DexScreen_GetDexCount 08104BBC 2
+
+# whiteout pos exceptions
+SetWhiteoutRespawnWarpAndHealerNpc 080bfcd0 1

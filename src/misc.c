@@ -139,3 +139,53 @@ u8 GetTrainerStarCount(struct TrainerCard *trainerCard)
 
     return stars;
 }
+
+extern const u16 sWhiteoutRespawnHealCenterMapIdxs[][2];
+
+void SetWhiteoutRespawnWarpAndHealerNpc(struct WarpData * warp)
+{
+    u32 healLocationIdx;
+
+    healLocationIdx = GetHealLocationIndexFromMapGroupAndNum(gSaveBlock1->lastHealLocation.mapGroup, gSaveBlock1->lastHealLocation.mapNum);
+    warp->mapGroup = sWhiteoutRespawnHealCenterMapIdxs[healLocationIdx - 1][0];
+    warp->mapNum = sWhiteoutRespawnHealCenterMapIdxs[healLocationIdx - 1][1];
+    warp->warpId = 0xFF;
+
+    if (sWhiteoutRespawnHealCenterMapIdxs[healLocationIdx - 1][0] == 4 && sWhiteoutRespawnHealCenterMapIdxs[healLocationIdx - 1][1] == 0) // kanto player indoor
+    {
+        warp->x = 8;
+        warp->y = 5;
+    }
+    else if (sWhiteoutRespawnHealCenterMapIdxs[healLocationIdx - 1][0] == 13 && sWhiteoutRespawnHealCenterMapIdxs[healLocationIdx - 1][1] == 0)
+    {
+        warp->x = 13;
+        warp->y = 12;
+    }
+    else if (32 && sWhiteoutRespawnHealCenterMapIdxs[healLocationIdx - 1][1] == 0)
+    {
+        warp->x = 5;
+        warp->y = 4;
+    }
+    else if (sWhiteoutRespawnHealCenterMapIdxs[healLocationIdx - 1][0] == 2 && sWhiteoutRespawnHealCenterMapIdxs[healLocationIdx - 1][1] == 10)
+    {
+        warp->x = 4;
+        warp->y = 11;
+        VarSet(0x4082, 0);
+    }
+    else if (sWhiteoutRespawnHealCenterMapIdxs[healLocationIdx - 1][0] == 44 && sWhiteoutRespawnHealCenterMapIdxs[healLocationIdx - 1][1] == 47)
+    {
+        warp->x = 5;
+        warp->y = 4;
+    }
+    else if (sWhiteoutRespawnHealCenterMapIdxs[healLocationIdx - 1][0] == 44 && sWhiteoutRespawnHealCenterMapIdxs[healLocationIdx - 1][1] == 1)
+    {
+        warp->x = 7;
+        warp->y = 5;
+    }
+    else
+    {
+        warp->x = 7;
+        warp->y = 4;
+    }
+    SetWhiteoutRespawnHealerNpcAsLastTalked(healLocationIdx);
+}
