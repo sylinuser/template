@@ -40,3 +40,4 @@ SetWhiteoutRespawnWarpAndHealerNpc 080bfcd0 1
 # fix prize money zeroing
 DisablePrizeMoney2 08054BE0 0
 AddShuckleFunctionality_hook 08747BF0 2
+Start7FF90 0807FF90 2

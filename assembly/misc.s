@@ -74,3 +74,45 @@ ldr r3, =0x08747BF8 | 1
 bx r3
 
 .pool
+
+
+/* Put 00 4A 10 47 XX XX XX 08 at 0x7FF90 (hook via r2) */
+
+/*
+----------------------------------------------------------
+This routine changes the address to load Trainer Data from
+to be the Battle Tower Trainer RAM (0x0203b0d8) if the
+index number of the current trainer is 0x0.
+
+Further edited to restore Jambo's pre-battle mugshot code.
+----------------------------------------------------------
+*/
+.equ TrainerData,       0x0203FEC0
+.equ TrainerTable,      0x0823EAC8
+
+Start7FF90:
+    push {r2}
+    ldrh r2, [r4]
+    cmp r2, #0x0
+    beq LoadBattleTower7FF90
+    ldr r1, =TrainerTable
+    lsl r0, r2, #0x2
+    add r0, r0, r2
+    lsl r0, r0, #0x3
+    add r0, r0, r1
+    b Return7FF90
+
+LoadBattleTower7FF90:
+    ldr r1, =TrainerData
+    mov r0, r1
+
+Return7FF90:
+    pop {r2}
+    ldr r5, .Return7FF90
+    bx r5
+
+.align 2
+//61 72 C2 09
+// offset of mugshothackone from https://www.pokecommunity.com/threads/pre-battle-mugshots-in-firered.240183/
+.Return7FF90:           .word 0x09C27231
+.pool
