@@ -60,3 +60,17 @@ skipDisablePrize2:
 
 bx_r2:
 	bx r2
+
+.global AddShuckleFunctionality_hook
+AddShuckleFunctionality_hook:
+
+bl AddShuckleFunctionality
+
+ldr r2, =0x02023D74
+ldr r3, [r2]
+add r3, #1
+str r3, [r2]
+ldr r3, =0x08747BF8 | 1
+bx r3
+
+.pool

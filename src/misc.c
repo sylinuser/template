@@ -14,6 +14,7 @@
 #include "../include/task.h"
 #include "../include/window.h"
 #include "../include/constants/moves.h"
+#include "../include/constants/species.h"
 
 #define LAND_WILD_COUNT     12
 #define WATER_WILD_COUNT    5
@@ -188,4 +189,19 @@ void SetWhiteoutRespawnWarpAndHealerNpc(struct WarpData * warp)
         warp->y = 4;
     }
     SetWhiteoutRespawnHealerNpcAsLastTalked(healLocationIdx);
+}
+
+void AddShuckleFunctionality(void)
+{
+    u32 species, heldItem;
+    for (int i = 0; i < PARTY_SIZE; i++)
+    {
+        species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES2);
+        heldItem = GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM);
+        if ((Random() & 0x7) == 0 && species == SPECIES_SHUCKLE && heldItem == 139) // ITEM_ORAN_BERRY
+        {
+            heldItem = 44; // ITEM_BERRY_JUICE
+            SetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, &heldItem);
+        }
+    }
 }
