@@ -36,3 +36,6 @@ DexScreen_GetDexCount 08104BBC 2
 
 # whiteout pos exceptions
 SetWhiteoutRespawnWarpAndHealerNpc 080bfcd0 1
+
+# fix prize money zeroing
+DisablePrizeMoney2 08054BE0 0
