@@ -17,10 +17,10 @@ DisableExp:
 	beq noCrashDisableExp
 	ldr r0, =(0x8021D24 +1)
 	bx r0
-	
+
 skipDisableExp:
 	pop {r0-r3}
-	
+
 noCrashDisableExp:
 	ldr r1, [r5]
 	add r1, #0x53
@@ -54,7 +54,7 @@ DisablePrizeMoney1:
     bl bx_r2
     ldr r1, =(0x8025A00 +1)
     bx r1
-    
+
 skipDisablePrize1:
     pop {r0-r3}
     mov r0, #0x0
@@ -77,15 +77,17 @@ skipDisablePrize1:
 
 .global DisablePrizeMoney2
 DisablePrizeMoney2:
+    push {r1}
     ldr r0, =Flag
     ldr r2, =(0x806E6D0 +1)
     bl bx_r2
+    pop {r1}
     cmp r0, #0x1
     beq skipDisablePrize2
     add r0, r4, #0x0
     ldr r2, =(0x809fdd8 +1)
     bl bx_r2
-    
+
 skipDisablePrize2:
     ldr r2, =(0x80a0058 +1)
     bl bx_r2
@@ -93,7 +95,7 @@ skipDisablePrize2:
     bl bx_r2
 
 .pool
-    
+
 
 
 .align 2
@@ -121,7 +123,7 @@ noskip3:
     mov r1, #0x0
     ldr r3, =(0x80D87BC +1)
     bl bx_r3
-    
+
 skipDisablePrize3:
     ldr r0, =(0x8032B4C +1)
     bx r0
