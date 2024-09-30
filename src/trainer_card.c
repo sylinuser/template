@@ -24,7 +24,7 @@ void SetDataFromTrainerCard_edits(void)
     {
         if (FlagGet(flags[i]))
             sTrainerCardDataPtr->badgeBitfield |= (1 << i);
-        if (i & 1 && FlagGet(FLAG_GYM_REMATCH_1+i))
+        if (FlagGet(FLAG_GYM_REMATCH_1+i))
             sTrainerCardDataPtr->goldBadgeBitfield |= (1 << i);
     }
 }
