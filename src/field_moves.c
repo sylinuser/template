@@ -647,6 +647,22 @@ void FieldCallback_Dig(void)
     gFieldEffectArguments[0] = GetCursorSelectionMonId();
 }
 
+// also get escape rope while we are here
+void Task_UseDigEscapeRopeOnField(u8 taskId)
+{
+    if (gSaveBlock1->location.mapGroup == 44 && gSaveBlock1->location.mapNum == 84 && gSaveBlock1->pos.x == 4 && gSaveBlock1->pos.y == 2 && GetPlayerFacingDirection() == DIR_NORTH && !FlagGet(0x215B))
+    {
+        PostFadeInDigSetup();
+        HideFieldMessageBox();
+    }
+    else
+    {
+        StartEscapeRopeFieldEffect();
+    }
+    ResetInitialPlayerAvatarState();
+    DestroyTask(taskId);
+}
+
 
 /////////////////////////////////////
 //            HEADBUTT             //
@@ -673,6 +689,8 @@ bool8 SetUpFieldMove_Headbutt(void)
 {
     struct MapPosition position;
     GetInFrontOfPlayerPosition(&position);
+
+
 
     if (MapGridGetMetatileAttributeAt(position.x, position.y) == 0xA4) // headbutt tree
     {

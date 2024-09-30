@@ -8,6 +8,7 @@ SetPartyMonFieldSelectionActions 081229fc 3
 SetUpFieldMove_SweetScent 080de0c8 0
 SetUpFieldMove_Dig 080c9a78 0
 FieldCallback_Dig 080c9aac 0
+Task_UseDigEscapeRopeOnField 080a1c44 1
 
 # metatile behavior for headbutt
 onpress_a_get_script_tile 0806D1F0 2
