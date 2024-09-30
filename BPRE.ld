@@ -1920,3 +1920,6 @@ sSpritePaletteTags = 0x03000de8;
 DoLoadSpritePalette = 0x080089a0 | 1;
 MarkFogSpritePalToLighten = 0x0807a714 | 1;
 WeatherShiftGammaIfPalStateIdle = 0x0807a790 | 1;
+
+gBugContestMon = 0x0203FEC0;
+gBCCSwapScreen = 0x0203FEC4;
